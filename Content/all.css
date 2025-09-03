@@ -1,0 +1,167 @@
+﻿/* General Body and Font Styles */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #eef2f5; /* A light, modern background color */
+    color: #333;
+}
+
+/* Container and Layout */
+.container {
+    padding-top: 50px;
+    padding-bottom: 50px;
+}
+
+/* Card Styles - A central element of modern UI */
+.card {
+    border-radius: 15px; /* Softer, rounded corners */
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); /* Deeper, more elegant shadow */
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    border: none; /* Remove default border */
+}
+
+    .card:hover {
+        transform: translateY(-8px); /* Subtle lift on hover */
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15); /* Enhanced shadow on hover */
+    }
+
+.card-header {
+    background-color: #4a90e2; /* A professional blue for headers */
+    color: white;
+    font-weight: 600;
+    border-radius: 15px 15px 0 0;
+    border: none;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* Button Styles - Clean and interactive */
+.btn {
+    border-radius: 50px; /* Pill-shaped buttons */
+    font-weight: 600;
+    padding: 12px 30px;
+    transition: all 0.3s ease;
+    border: none;
+    text-transform: uppercase; /* Use uppercase for a strong look */
+}
+
+.btn-primary {
+    background-color: #4a90e2;
+    border-color: #4a90e2;
+}
+
+    .btn-primary:hover {
+        background-color: #357bd2;
+        transform: translateY(-2px);
+    }
+
+.btn-success {
+    background-color: #5cb85c;
+    border-color: #5cb85c;
+}
+
+    .btn-success:hover {
+        background-color: #4cae4c;
+        transform: translateY(-2px);
+    }
+
+.btn-warning {
+    background-color: #f0ad4e;
+    border-color: #f0ad4e;
+}
+
+    .btn-warning:hover {
+        background-color: #eea236;
+        transform: translateY(-2px);
+    }
+
+.btn-danger {
+    background-color: #d9534f;
+    border-color: #d9534f;
+}
+
+    .btn-danger:hover {
+        background-color: #c9302c;
+        transform: translateY(-2px);
+    }
+
+/* GridView Styles - Professional and readable tables */
+.table {
+    border-radius: 10px;
+    overflow: hidden; /* Ensures rounded corners are applied to table */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
+
+    .table thead th {
+        background-color: #e9ecef;
+        border-bottom: 2px solid #dee2e6;
+        font-weight: 600;
+    }
+
+    .table tbody tr:nth-of-type(odd) {
+        background-color: #f8f9fa;
+    }
+
+    .table tbody tr:hover {
+        background-color: #e9ecef;
+        cursor: pointer;
+    }
+
+/* Form Controls - Clean and modern inputs */
+.form-control {
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.075);
+    transition: all 0.3s ease;
+}
+
+    .form-control:focus {
+        border-color: #4a90e2;
+        box-shadow: 0 0 0 0.2rem rgba(74, 144, 226, 0.25);
+    }
+
+/* Jumbotron (Hero Section) */
+.jumbotron {
+    background: linear-gradient(135deg, #4a90e2 0%, #7db9e8 100%);
+    color: white;
+    border-radius: 15px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    padding: 60px 20px;
+}
+
+    .jumbotron h1 {
+        font-size: 3.5rem;
+        font-weight: 700;
+    }
+
+    .jumbotron p.lead {
+        font-size: 1.5rem;
+        font-weight: 300;
+        opacity: 0.9;
+    }
+
+/* Utility Classes */
+.mb-4 {
+    margin-bottom: 1.5rem !important;
+}
+
+.mt-5 {
+    margin-top: 3rem !important;
+}
+/* Custom Fade-in Animation */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translate3d(0, 40px, 0);
+    }
+
+    to {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+.fade-in {
+    animation-duration: 1s;
+    animation-fill-mode: both;
+    animation-name: fadeInUp;
+}

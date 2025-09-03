@@ -1,0 +1,151 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="site.master.cs" Inherits="site" %>
+
+<!DOCTYPE html>
+<html lang="en">
+<head runat="server">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%: Page.Title %> - Librythm</title>
+
+    <%-- Bootstrap v4 CSS (Offline) --%>
+    <link href="Content/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="Content/all.css" rel="stylesheet" />
+    <%-- Font Awesome v5 CSS (Offline) --%>
+    <link href="~/css/all.css" rel="stylesheet" />
+
+    <%-- Custom Styles for UI/UX --%>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #eef2f5;
+            color: #333;
+        }
+        .body-content {
+            flex: 1;
+        }
+        footer {
+            width: 100%;
+            padding: 20px 0;
+            text-align: center;
+            background-color: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+        }
+        .card {
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            border: none;
+        }
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+        }
+        .card-header {
+            background-color: #4a90e2;
+            color: white;
+            font-weight: 600;
+            border-radius: 15px 15px 0 0;
+            border: none;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+        .btn {
+            border-radius: 50px;
+            font-weight: 600;
+            padding: 12px 30px;
+            transition: all 0.3s ease;
+            border: none;
+            text-transform: uppercase;
+        }
+        .jumbotron {
+            background: linear-gradient(135deg, #4a90e2 0%, #7db9e8 100%);
+            color: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            padding: 60px 20px;
+        }
+        .jumbotron h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+        }
+        .jumbotron p.lead {
+            font-size: 1.5rem;
+            font-weight: 300;
+            opacity: 0.9;
+        }
+        /* Custom Fade-in Animation */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translate3d(0, 40px, 0);
+            }
+            to {
+                opacity: 1;
+                transform: translate3d(0, 0, 0);
+            }
+        }
+        .fade-in {
+            animation-duration: 1s;
+            animation-fill-mode: both;
+            animation-name: fadeInUp;
+        }
+    </style>
+    
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+    <form runat="server">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <a class="navbar-brand" href="homepage.aspx">
+                <i class="fas fa-book-open"></i> Librythm
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" runat="server" id="homeLink"><i class="fas fa-home"></i> Home</a>
+                    </li>
+                    <li class="nav-item" id="liAdminDashboard" runat="server">
+                        <a class="nav-link" href="admindashboard.aspx"><i class="fas fa-tachometer-alt"></i> Admin Dashboard</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item" id="liAdminLogin" runat="server">
+                        <a class="nav-link" href="adminlogin.aspx"><i class="fas fa-user-shield"></i> Admin Login</a>
+                    </li>
+                    <li class="nav-item" id="liMemberLogin" runat="server">
+                        <a class="nav-link" href="member_login.aspx"><i class="fas fa-user-circle"></i> Member Login</a>
+                    </li>
+                    <li class="nav-item" id="liHelloUser" runat="server">
+                        <a class="nav-link" href="#" style="font-weight: bold;"><asp:Label ID="lblUsername" runat="server"></asp:Label></a>
+                    </li>
+                    <li class="nav-item" id="liLogout" runat="server">
+                        <a class="nav-link" href="logout.aspx"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <div class="container body-content">
+            <asp:ContentPlaceHolder ID="MainContent" runat="server">
+            </asp:ContentPlaceHolder>
+        </div>
+
+        <footer>
+            <p class="mb-0">&copy; <%: DateTime.Now.Year %> - Librythm. All Rights Reserved.</p>
+        </footer>
+    </form>
+    
+   <%-- jQuery (Offline) --%>
+    <script src="Content/jquery-3.7.1.min.js"></script>
+    <%-- Bootstrap JS (Offline) --%>
+    <script src="Content/js/bootstrap.min.js"></script>
+    <script src="Content/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
