@@ -1,5 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/site.master" AutoEventWireup="true" CodeFile="book_management.aspx.cs" Inherits="book_management" %>
-
+﻿<%@ Page Title="Book Management" Language="C#" MasterPageFile="~/site.master" AutoEventWireup="true" CodeFile="book_management.aspx.cs" Inherits="book_management" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <div class="container mt-5">
@@ -27,14 +26,18 @@
                                 <asp:ListItem Text="Gujarati" Value="Gujarati"></asp:ListItem>
                             </asp:DropDownList>
                         </div>
+                        
+                        <%-- --- Manual Author/Publisher TextBoxes --- --%>
                         <div class="form-group">
-                            <label for="ddlAuthor">Author</label>
-                            <asp:DropDownList ID="ddlAuthor" runat="server" CssClass="form-control"></asp:DropDownList>
+                            <label for="txtAuthorNameManual">Author Name</label>
+                            <asp:TextBox ID="txtAuthorNameManual" runat="server" CssClass="form-control" placeholder="Enter Author Name"></asp:TextBox>
                         </div>
                         <div class="form-group">
-                            <label for="ddlPublisher">Publisher</label>
-                            <asp:DropDownList ID="ddlPublisher" runat="server" CssClass="form-control"></asp:DropDownList>
+                            <label for="txtPublisherNameManual">Publisher Name</label>
+                            <asp:TextBox ID="txtPublisherNameManual" runat="server" CssClass="form-control" placeholder="Enter Publisher Name"></asp:TextBox>
                         </div>
+                        <%-- ----------------------------------------- --%>
+
                         <div class="form-group">
                             <label for="txtPublishDate">Publish Date</label>
                             <asp:TextBox ID="txtPublishDate" runat="server" CssClass="form-control" TextMode="Date"></asp:TextBox>
@@ -43,10 +46,26 @@
                             <label for="txtEdition">Edition</label>
                             <asp:TextBox ID="txtEdition" runat="server" CssClass="form-control" placeholder="Enter Edition"></asp:TextBox>
                         </div>
+                        
+                        <%-- --- Currency Inputs Start (Key for jQuery) --- --%>
                         <div class="form-group">
-                            <label for="txtCost">Book Cost</label>
-                            <asp:TextBox ID="txtCost" runat="server" CssClass="form-control" TextMode="Number" placeholder="Enter Cost"></asp:TextBox>
+                            <label for="txtCost">Book Cost (₹ INR)</label>
+                            <asp:TextBox ID="txtCost" runat="server" CssClass="form-control" TextMode="Number" placeholder="Enter Cost in INR"></asp:TextBox>
                         </div>
+                        <div class="form-group">
+                            <label for="txtUSDCost">Book Cost ($ USD)</label>
+                            <asp:TextBox ID="txtUSDCost" runat="server" CssClass="form-control" ReadOnly="true" placeholder="Calculated USD Cost"></asp:TextBox>
+                        </div>
+                        <div class="form-group">
+                            <label for="txtEURCost">Book Cost (€ EUR)</label>
+                            <asp:TextBox ID="txtEURCost" runat="server" CssClass="form-control" ReadOnly="true" placeholder="Calculated EUR Cost"></asp:TextBox>
+                        </div>
+                        <div class="form-group">
+                            <label for="txtGBPCost">Book Cost (£ GBP)</label>
+                            <asp:TextBox ID="txtGBPCost" runat="server" CssClass="form-control" ReadOnly="true" placeholder="Calculated GBP Cost"></asp:TextBox>
+                        </div>
+                        <%-- --- Currency Inputs End --- --%>
+
                         <div class="form-group">
                             <label for="txtPages">No. of Pages</label>
                             <asp:TextBox ID="txtPages" runat="server" CssClass="form-control" TextMode="Number" placeholder="Enter Pages"></asp:TextBox>
@@ -82,10 +101,11 @@
                                 <Columns>
                                     <asp:BoundField DataField="book_id" HeaderText="ID" ReadOnly="true" />
                                     <asp:BoundField DataField="book_name" HeaderText="Book Name" />
-                                    <asp:BoundField DataField="author_name" HeaderText="Author" />
-                                    <asp:BoundField DataField="publisher_name" HeaderText="Publisher" />
-                                    <asp:BoundField DataField="actual_stock" HeaderText="Actual Stock" />
-                                    <asp:BoundField DataField="current_stock" HeaderText="Current Stock" />
+                                    <asp:BoundField DataField="book_cost" HeaderText="Cost (₹)" DataFormatString="₹{0:0.00}" />
+                                    <asp:BoundField DataField="usd_book_cost" HeaderText="Cost ($)" DataFormatString="${0:0.00}" />
+                                    <asp:BoundField DataField="eur_book_cost" HeaderText="Cost (€)" DataFormatString="€{0:0.00}" />
+                                    <asp:BoundField DataField="gbp_book_cost" HeaderText="Cost (£)" DataFormatString="£{0:0.00}" />
+                                    <asp:BoundField DataField="current_stock" HeaderText="Stock" />
                                     <asp:CommandField ShowSelectButton="true" HeaderText="Select" />
                                     <asp:CommandField ShowDeleteButton="true" HeaderText="Delete" />
                                 </Columns>
@@ -96,5 +116,47 @@
             </div>
         </div>
     </div>
-</asp:Content>
 
+    <script type="text/javascript">
+        // Client-side script for real-time currency conversion
+        $(document).ready(function () {
+            // Fixed exchange rates (Must match C# backend rates)
+            const USDRate = 75.00;
+            const EURRate = 85.00;
+            const GBPRate = 95.00;
+
+            // Get client IDs for TextBoxes
+            const txtCostId = "#<%= txtCost.ClientID %>";
+            const txtUSDCostId = "#<%= txtUSDCost.ClientID %>";
+            const txtEURCostId = "#<%= txtEURCost.ClientID %>";
+            const txtGBPCostId = "#<%= txtGBPCost.ClientID %>";
+
+            // Function to perform calculation
+            function calculateCurrency() {
+                let inrCost = parseFloat($(txtCostId).val());
+
+                if (isNaN(inrCost) || inrCost < 0) {
+                    $(txtUSDCostId).val('');
+                    $(txtEURCostId).val('');
+                    $(txtGBPCostId).val('');
+                    return;
+                }
+
+                // Calculation and display
+                let usdCost = (inrCost / USDRate).toFixed(2);
+                let eurCost = (inrCost / EURRate).toFixed(2);
+                let gbpCost = (inrCost / GBPRate).toFixed(2);
+
+                $(txtUSDCostId).val(usdCost);
+                $(txtEURCostId).val(eurCost);
+                $(txtGBPCostId).val(gbpCost);
+            }
+
+            // Bind the calculation function to the keyup and change events of INR cost field
+            $(txtCostId).on('keyup change', calculateCurrency);
+            
+            // Initial calculation if page loads with a value
+            calculateCurrency(); 
+        });
+    </script>
+</asp:Content>

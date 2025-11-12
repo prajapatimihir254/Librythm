@@ -10,6 +10,7 @@ public partial class book_list_for_members : System.Web.UI.Page
     string strcon = ConfigurationManager.ConnectionStrings["con"].ConnectionString;
     protected void Page_Load(object sender, EventArgs e)
     {
+        // Security check remains
         if (Session["role"] == null || Session["role"].ToString() != "member")
         {
             Response.Redirect("member_login.aspx");
@@ -19,20 +20,27 @@ public partial class book_list_for_members : System.Web.UI.Page
         {
             bindBooksGridView();
         }
+        // Server-side search button click event hata diya gaya hai.
     }
     protected void btnSearch_Click(object sender, EventArgs e)
     {
-        string searchQuery = txtSearchBook.Text.Trim();
-        if (!string.IsNullOrEmpty(searchQuery))
-        {
-            bindBooksGridView(searchQuery);
-        }
-        else
-        {
-            bindBooksGridView();
-        }
+        // When the Search button is clicked, filter the data based on the input text.
+        bindBooksGridView(txtSearchBook.Text.Trim());
     }
+    //protected void btnSearch_Click(object sender, EventArgs e)
+    //{
+    //    string searchQuery = txtSearchBook.Text.Trim();
+    //    if (!string.IsNullOrEmpty(searchQuery))
+    //    {
+    //        bindBooksGridView(searchQuery);
+    //    }
+    //    else
+    //    {
+    //        bindBooksGridView();
+    //    }
+    //}
 
+    // Helper function to bind data to GridView
     private void bindBooksGridView(string searchTerm = null)
     {
         try
@@ -44,15 +52,27 @@ public partial class book_list_for_members : System.Web.UI.Page
             }
 
             SqlCommand cmd;
+
+            // Base query selects all required fields including description
+            string baseQuery = "SELECT book_name, author_name, publisher_name, language, current_stock, book_description FROM book_master_tbl";
+
             if (!string.IsNullOrEmpty(searchTerm))
             {
-                string query = "SELECT book_name, author_name, publisher_name, language, current_stock FROM book_master_tbl WHERE book_name LIKE @searchTerm OR author_name LIKE @searchTerm OR genre LIKE @searchTerm";
-                cmd = new SqlCommand(query, con);
-                cmd.Parameters.AddWithValue("@searchTerm", "%" + searchTerm + "%");
+                // If a search term is provided, modify the query to filter results
+                string filterQuery = baseQuery +
+                    " WHERE book_name LIKE @SearchTerm OR " +
+                    " author_name LIKE @SearchTerm OR " +
+                    " publisher_name LIKE @SearchTerm OR " +
+                    " book_description LIKE @SearchTerm";
+
+                cmd = new SqlCommand(filterQuery, con);
+                // Use % signs to find the search term anywhere in the specified columns
+                cmd.Parameters.AddWithValue("@SearchTerm", "%" + searchTerm + "%");
             }
             else
             {
-                cmd = new SqlCommand("SELECT book_name, author_name, publisher_name, language, current_stock FROM book_master_tbl", con);
+                // If no search term, use the base query to show all books
+                cmd = new SqlCommand(baseQuery, con);
             }
 
             SqlDataAdapter da = new SqlDataAdapter(cmd);
@@ -66,7 +86,7 @@ public partial class book_list_for_members : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            // Log or display error
+            // You may want to display a generic error message here
         }
     }
 }

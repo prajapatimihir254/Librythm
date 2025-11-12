@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/site.master" AutoEventWireup="true" CodeFile="issue_book.aspx.cs" Inherits="issue_book" %>
+﻿<%@ Page Title="Issue Book" Language="C#" MasterPageFile="~/site.master" AutoEventWireup="true" CodeFile="issue_book.aspx.cs" Inherits="issue_book" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <div class="container mt-5">
@@ -36,18 +36,22 @@
                                 <asp:TextBox ID="txtBookName" runat="server" CssClass="form-control" ReadOnly="true"></asp:TextBox>
                             </div>
                         </div>
+                        
+                        <%-- --- Automated Dates (Read-Only) --- --%>
                         <div class="form-group row">
                             <label for="txtIssueDate" class="col-sm-4 col-form-label">Issue Date</label>
                             <div class="col-sm-8">
-                                <asp:TextBox ID="txtIssueDate" runat="server" CssClass="form-control" TextMode="Date"></asp:TextBox>
+                                <asp:TextBox ID="txtIssueDate" runat="server" CssClass="form-control" ReadOnly="true"></asp:TextBox>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label for="txtDueDate" class="col-sm-4 col-form-label">Due Date</label>
                             <div class="col-sm-8">
-                                <asp:TextBox ID="txtDueDate" runat="server" CssClass="form-control" TextMode="Date"></asp:TextBox>
+                                <asp:TextBox ID="txtDueDate" runat="server" CssClass="form-control" ReadOnly="true"></asp:TextBox>
                             </div>
                         </div>
+                        <%-- --------------------------------- --%>
+
                         <div class="d-flex justify-content-center mt-4">
                             <asp:Button ID="btnIssue" runat="server" Text="Issue" CssClass="btn btn-success" OnClick="btnIssue_Click" />
                             <asp:Button ID="btnReturn" runat="server" Text="Return" CssClass="btn btn-warning ml-2" OnClick="btnReturn_Click" />

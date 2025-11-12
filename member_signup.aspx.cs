@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Configuration;
 using System.Data;
+using System.Text.RegularExpressions;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Web.UI;
@@ -28,9 +29,9 @@ public partial class member_signup : System.Web.UI.Page
             SqlCommand cmd = new SqlCommand("SELECT ISNULL(MAX(CAST(SUBSTRING(member_id, 3, LEN(member_id)-2) AS INT)), 0) FROM member_master_tbl", con);
             int lastID = Convert.ToInt32(cmd.ExecuteScalar());
             int newID = lastID + 1;
-            string newMemberID = "M-" + newID.ToString("D4"); // Format as M-0001, M-0002 etc.
+            string newMemberID = "M-" + newID.ToString("D4");
 
-            txtMemberID.Text = newMemberID; // Directly set the value in the TextBox
+            txtMemberID.Text = newMemberID;
 
             con.Close();
         }
@@ -40,8 +41,43 @@ public partial class member_signup : System.Web.UI.Page
         }
     }
 
+    // --- NEW: Password Validation Function ---
+    private bool IsPasswordValid(string password)
+    {
+        // Minimum 8 characters
+        if (password.Length < 8) return false;
+        // At least one uppercase letter (A-Z)
+        if (!Regex.IsMatch(password, "[A-Z]")) return false;
+        // At least one lowercase letter (a-z)
+        if (!Regex.IsMatch(password, "[a-z]")) return false;
+        // At least one digit (0-9)
+        if (!Regex.IsMatch(password, "[0-9]")) return false;
+        // At least one special character
+        if (!Regex.IsMatch(password, "[^a-zA-Z0-9]")) return false;
+
+        return true;
+    }
+
+    private void clearFields()
+    {
+        txtAddress.Text = "";
+        txtContact.Text = "";
+        txtEmail.Text = "";
+        txtFullName.Text = "";
+        txtPassword.Text = "";
+        txtPincode.Text = "";
+        
+    }
+
     protected void btnSignUp_Click(object sender, EventArgs e)
     {
+        // Check Password Strength
+        if (!IsPasswordValid(txtPassword.Text.Trim()))
+        {
+            lblMessage.Text = "Password must be at least 8 characters long and contain uppercase, lowercase, number, and a special character.";
+            return;
+        }
+
         try
         {
             SqlConnection con = new SqlConnection(strcon);
@@ -74,8 +110,7 @@ public partial class member_signup : System.Web.UI.Page
             cmd.ExecuteNonQuery();
             con.Close();
             lblMessage.Text = "Sign up successful! Your Member ID is: " + txtMemberID.Text.Trim() + ". You can now login.";
-            lblMessage.CssClass = "text-success";
-
+            clearFields();
         }
         catch (Exception ex)
         {
